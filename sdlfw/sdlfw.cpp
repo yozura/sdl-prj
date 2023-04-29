@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <stdio.h>
 
 SDL_Window      * g_pWindow     = 0;
 SDL_Renderer    * g_pRenderer   = 0;
@@ -45,9 +46,15 @@ int main(int argc, char* argv[])
         return 1;
     }
 
+    int i = 0;
     while (g_bRunning)
     {
         render();
+        printf("%d \n", i);
+        if (++i > 10000) 
+        {
+            g_bRunning = false;
+        }
     }
 
     SDL_Quit();

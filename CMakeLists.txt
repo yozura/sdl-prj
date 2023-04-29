@@ -13,6 +13,7 @@ set(GL_INCLUDE_PATH /usr/include/GL/)
 # Set Project Names
 set(DFGL "dfgl")
 set(ONLYSDL "onlysdl")
+set(SDLFW "sdlfw")
 
 # DFGL
 project(${DFGL})
@@ -30,4 +31,12 @@ add_executable(${ONLYSDL} ${ONLYSDL}/${ONLYSDL}.cpp)
 target_include_directories(${ONLYSDL} PRIVATE ${SDL2_INCLUDE_PATH})
 
 target_link_libraries(${ONLYSDL} SDL2)
+
+# SDLFW
+project(${SDLFW})
+add_executable(${SDLFW} ${SDLFW}/${SDLFW}.cpp)
+
+target_include_directories(${SDLFW} PRIVATE ${SDL2_INCLUDE_PATH})
+
+target_link_libraries(${SDLFW} SDL2)
 ####################################################################
