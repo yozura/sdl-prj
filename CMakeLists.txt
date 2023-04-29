@@ -2,41 +2,39 @@ cmake_minimum_required(VERSION 3.11)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "Enable/Disable output of compile commands during generation" FORCE)
 
-###################################################################
+# Set Compiler
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+####################################################################
 # Project Config
 ####################################################################
 
-# Set Include path
-set(SDL2_INCLUDE_PATH /usr/include/SDL2/)
-set(GL_INCLUDE_PATH /usr/include/GL/)
+# Set Project Name
+project(MyGame)
 
-# Set Project Names
-set(DFGL "dfgl")
-set(ONLYSDL "onlysdl")
-set(SDLFW "sdlfw")
+# Find Packages
+find_package(SDL2   REQUIRED)
+find_package(OpenGL REQUIRED)
 
-# DFGL
-project(${DFGL})
-add_executable(${DFGL} ${DFGL}/${DFGL}.c)
+# Add SubLibaries
+add_subdirectory(include)
 
-target_include_directories(${DFGL} PRIVATE ${SDL2_INCLUDE_PATH}	${GL_INCLUDE_PATH})
+# Program
+add_executable(${PROJECT_NAME} src/main.cpp)
 
-target_link_libraries(${DFGL} SDL2)
-target_link_libraries(${DFGL} GL)
+# Include Directories
+target_include_directories(
+    ${PROJECT_NAME} PRIVATE 
+    ${SDL2_INCLUDE_DIRS}
+    include/Game
+)
 
-# ONLYSDL
-project(${ONLYSDL})
-add_executable(${ONLYSDL} ${ONLYSDL}/${ONLYSDL}.cpp)
+# Link Libraries
+target_link_libraries(
+    ${PROJECT_NAME} PRIVATE 
+    Game
+)
 
-target_include_directories(${ONLYSDL} PRIVATE ${SDL2_INCLUDE_PATH})
-
-target_link_libraries(${ONLYSDL} SDL2)
-
-# SDLFW
-project(${SDLFW})
-add_executable(${SDLFW} ${SDLFW}/${SDLFW}.cpp)
-
-target_include_directories(${SDLFW} PRIVATE ${SDL2_INCLUDE_PATH})
-
-target_link_libraries(${SDLFW} SDL2)
 ####################################################################
+
