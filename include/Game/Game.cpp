@@ -2,7 +2,8 @@
 
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
-    int flags = SDL_WINDOW_SHOWN;
+    SDL_Surface    *pTempSurface = SDL_LoadBMP("/home/yozura/study/sdl-prj/assets/rider.bmp");
+    int             flags        = SDL_WINDOW_SHOWN;
 
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
     {
@@ -28,8 +29,17 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
         std::cout << "SDL_CreateRenderer SUCCESS\n";
         
-        SDL_SetRenderDrawColor(m_pRenderer, 255, 255, 255, 255);
-        
+        SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 255);
+
+        m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
+        SDL_FreeSurface(pTempSurface);
+
+        SDL_QueryTexture(m_pTexture, NULL, NULL, &m_srcRect.w, &m_srcRect.h);
+        m_destRect.x = m_srcRect.x = 0;
+        m_destRect.y = m_srcRect.y = 0;
+        m_destRect.w = m_srcRect.w;
+        m_destRect.h = m_srcRect.h;
+
         m_bRunning = true;
     }
     else 
@@ -65,6 +75,7 @@ void Game::update()
 void Game::render()
 {
     SDL_RenderClear(m_pRenderer);
+    SDL_RenderCopy(m_pRenderer, m_pTexture, &m_srcRect, &m_destRect);
     SDL_RenderPresent(m_pRenderer);
 }
 

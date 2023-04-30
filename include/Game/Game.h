@@ -20,6 +20,11 @@ public:
 private:
     SDL_Window      *m_pWindow;
     SDL_Renderer    *m_pRenderer;
+    
+    SDL_Texture     *m_pTexture;
+    SDL_Rect         m_srcRect;
+    SDL_Rect         m_destRect;
+
     bool             m_bRunning;
 };
 
