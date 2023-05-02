@@ -1,3 +1,7 @@
+#include <iostream>
+#include <SDL_image.h>
+#include <TextureManager.h>
+
 #include "Game.h"
 
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
@@ -6,8 +10,6 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
     {
-        std::cout << "SDL_Init SUCCESS\n";
-    
         if (fullscreen) flags = SDL_WINDOW_FULLSCREEN;
 
         m_pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
@@ -17,8 +19,6 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
             return false;
         }
 
-        std::cout << "SDL_CreateWindow SUCCESS\n";
-
         m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
         if (m_pRenderer == 0)
         {
@@ -26,10 +26,14 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
             return false;
         }
 
-        std::cout << "SDL_CreateRenderer SUCCESS\n";
+        SDL_SetRenderDrawColor(m_pRenderer, 255, 0, 0, 255);
         
-        SDL_SetRenderDrawColor(m_pRenderer, 255, 255, 255, 255);
-        
+        if (!TheTextureManager::Instance()->load("../assets/animate-alpha.png", "animate", m_pRenderer))
+        {
+            std::cout << "TextureManager FAILED\n";
+            return false;
+        }
+
         m_bRunning = true;
     }
     else 
@@ -59,12 +63,14 @@ void Game::handleEvents()
 
 void Game::update()
 {
-    
+    m_currentFrame = int(((SDL_GetTicks() / 100) % 4));
 }
 
 void Game::render()
 {
     SDL_RenderClear(m_pRenderer);
+    TheTextureManager::Instance()->draw("animate", 0, 0, 128, 164, m_pRenderer);
+    TheTextureManager::Instance()->drawFrame("animate", 100, 100, 128, 164, 1, m_currentFrame, m_pRenderer);
     SDL_RenderPresent(m_pRenderer);
 }
 
