@@ -1,7 +1,6 @@
 #ifndef __GAME__
 #define __GAME__
 #include <SDL.h>
-#include <iostream>
 
 class Game
 {
@@ -20,12 +19,9 @@ public:
 private:
     SDL_Window      *m_pWindow;
     SDL_Renderer    *m_pRenderer;
-    
-    SDL_Texture     *m_pTexture;
-    SDL_Rect         m_srcRect;
-    SDL_Rect         m_destRect;
 
     bool             m_bRunning;
+    int              m_currentFrame;
 };
 
 #endif /* defined (__GAME__) */
